@@ -239,10 +239,21 @@ window.ReactDOM["default"] = window.ReactDOM;
         }, {
             key: 'render',
             value: function render() {
+                var _this = this;
+
+                var value = this.props.value;
+
+                if (typeof value != 'string') {
+                    var col = Object.keys(this.props.value).toString();
+                    var val = Object.keys(this.props.value).map(function (key) {
+                        return _this.props.value[key];
+                    }).toString();
+                    value = col + ': ' + val;
+                }
                 return _react['default'].createElement('input', { type: 'text',
                     className: 'reactable-filter-input',
                     placeholder: this.props.placeholder,
-                    value: this.props.value,
+                    value: value,
                     onKeyUp: this.onChange.bind(this),
                     onChange: this.onChange.bind(this) });
             }
@@ -1204,24 +1215,59 @@ window.ReactDOM["default"] = window.ReactDOM;
         }, {
             key: 'applyFilter',
             value: function applyFilter(filter, children) {
-                // Helper function to apply filter text to a list of table rows
-                filter = filter.toLowerCase();
-                var matchedChildren = [];
+                if (typeof filter === 'string') {
+                    // Helper function to apply filter text to a list of table rows
+                    filter = filter.toLowerCase();
+                    var matchedChildren = [];
 
-                for (var i = 0; i < children.length; i++) {
-                    var data = children[i].props.data;
+                    for (var i = 0; i < children.length; i++) {
+                        var data = children[i].props.data;
 
-                    for (var j = 0; j < this.props.filterable.length; j++) {
-                        var filterColumn = this.props.filterable[j];
+                        for (var j = 0; j < this.props.filterable.length; j++) {
+                            var filterColumn = this.props.filterable[j];
+
+                            if (typeof data[filterColumn] !== 'undefined' && (0, _libExtract_data_from.extractDataFrom)(data, filterColumn).toString().toLowerCase().indexOf(filter) > -1) {
+                                matchedChildren.push(children[i]);
+                                break;
+                            }
+                        }
+                    }
+
+                    return matchedChildren;
+                } else {
+                    var cols = Object.keys(filter);
+                    filter = cols.map(function (key) {
+                        return filter[key];
+                    });
+                    filter = filter.toString().toLowerCase();
+
+                    var matchedChildren = [];
+                    var filterColumn = cols.toString();
+
+                    for (var i = 0; i < children.length; i++) {
+                        var data = children[i].props.data;
 
                         if (typeof data[filterColumn] !== 'undefined' && (0, _libExtract_data_from.extractDataFrom)(data, filterColumn).toString().toLowerCase().indexOf(filter) > -1) {
                             matchedChildren.push(children[i]);
-                            break;
                         }
                     }
+
+                    return matchedChildren;
+                }
+            }
+        }, {
+            key: 'onFilter',
+            value: function onFilter(filter) {
+                if (typeof filter === 'string' && filter.indexOf(':') != -1) {
+                    var filterObj = {};
+                    filter = filter.split(':');
+                    var col = filter[0].trim();
+                    var val = filter[1].trim();
+                    filterObj[col] = val;
+                    filter = filterObj;
                 }
 
-                return matchedChildren;
+                this.setState({ filter: filter });
             }
         }, {
             key: 'sortByCurrentSort',
@@ -1284,7 +1330,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                 this.setState({ currentSort: currentSort });
                 this.sortByCurrentSort();
 
-                if (this.props.onSort) {
+                if (typeof this.props.onSort === 'function') {
                     this.props.onSort(currentSort);
                 }
             }
@@ -1410,9 +1456,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                     props,
                     columns && columns.length > 0 ? _react['default'].createElement(_thead.Thead, { columns: columns,
                         filtering: filtering,
-                        onFilter: function (filter) {
-                            _this.setState({ filter: filter });
-                        },
+                        onFilter: this.onFilter.bind(this),
                         filterPlaceholder: this.props.filterPlaceholder,
                         currentFilter: this.state.filter,
                         sort: this.state.currentSort,
