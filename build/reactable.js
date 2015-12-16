@@ -239,17 +239,16 @@ window.ReactDOM["default"] = window.ReactDOM;
         }, {
             key: 'render',
             value: function render() {
-                var _this = this;
-
-                var value = this.props.value;
-
-                if (typeof value != 'string') {
-                    var col = Object.keys(this.props.value).toString();
-                    var val = Object.keys(this.props.value).map(function (key) {
-                        return _this.props.value[key];
-                    }).toString();
-                    value = col + ': ' + val;
+                var value = '';
+                if (typeof this.props.value != 'string') {
+                    for (var key in this.props.value) {
+                        value += key + ': ' + this.props.value[key] + ', ';
+                    }
+                    value = value.slice(0, -2);
+                } else {
+                    value = this.props.value;
                 }
+                value = value.trim();
                 return _react['default'].createElement('input', { type: 'text',
                     className: 'reactable-filter-input',
                     placeholder: this.props.placeholder,
@@ -1235,20 +1234,17 @@ window.ReactDOM["default"] = window.ReactDOM;
 
                     return matchedChildren;
                 } else {
-                    var cols = Object.keys(filter);
-                    filter = cols.map(function (key) {
-                        return filter[key];
-                    });
-                    filter = filter.toString().toLowerCase();
-
                     var matchedChildren = [];
-                    var filterColumn = cols.toString();
 
                     for (var i = 0; i < children.length; i++) {
                         var data = children[i].props.data;
 
-                        if (typeof data[filterColumn] !== 'undefined' && (0, _libExtract_data_from.extractDataFrom)(data, filterColumn).toString().toLowerCase().indexOf(filter) > -1) {
-                            matchedChildren.push(children[i]);
+                        for (var filterColumn in filter) {
+                            var val = filter[filterColumn];
+                            if (typeof data[filterColumn] !== 'undefined' && (0, _libExtract_data_from.extractDataFrom)(data, filterColumn).toString().toLowerCase().indexOf(val) > -1) {
+                                matchedChildren.push(children[i]);
+                                break;
+                            }
                         }
                     }
 
@@ -1257,17 +1253,27 @@ window.ReactDOM["default"] = window.ReactDOM;
             }
         }, {
             key: 'onFilter',
-            value: function onFilter(filter) {
-                if (typeof filter === 'string' && filter.indexOf(':') != -1) {
-                    var filterObj = {};
-                    filter = filter.split(':');
-                    var col = filter[0].trim();
-                    var val = filter[1].trim();
-                    filterObj[col] = val;
-                    filter = filterObj;
+            value: function onFilter(filters) {
+                if (typeof filters === 'string' && filters.indexOf(':') != -1) {
+                    (function () {
+                        filters.trim();
+                        var filterObj = {};
+                        var col = undefined,
+                            val = undefined;
+                        filters = filters.split(',');
+
+                        filters.map(function (filter) {
+                            filter = filter.split(':');
+                            col = filter[0].trim();
+                            val = filter[1].trim();
+                            filterObj[col] = val;
+                        });
+
+                        filters = filterObj;
+                    })();
                 }
 
-                this.setState({ filter: filter });
+                this.setState({ filter: filters });
             }
         }, {
             key: 'sortByCurrentSort',

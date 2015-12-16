@@ -7,14 +7,16 @@ export class FiltererInput extends React.Component {
     }
 
     render() {
-      let value = this.props.value
-
-      if (typeof(value) != 'string') {
-        let col = Object.keys(this.props.value).toString()
-        let val = Object.keys(this.props.value).map(key => this.props.value[key]).toString()
-         value = col+': '+val
+      let value = ''
+      if (typeof(this.props.value) != 'string') {
+        for(let key in this.props.value) {
+          value += key + ': ' + this.props.value[key] + ', '
+        }
+      value = value.slice(0, -2)
+      } else {
+        value = this.props.value
       }
-      value.trim()
+      value = value.trim()
         return (
             <input type="text"
                 className="reactable-filter-input"
