@@ -99,19 +99,15 @@ export class Paginator extends React.Component {
         }
 
         return (
-            <tbody className="reactable-pagination">
-                <tr>
-                    <td colSpan={this.props.colSpan}>
-                      <div className="pagination">
-                        <ul>
-                          {this.renderPrevious()}
-                          {pageButtons}
-                          {this.renderNext()}
-                        </ul>
-                      </div>
-                    </td>
-                </tr>
-            </tbody>
+            <div className="reactable-pagination">
+              <div className="pagination">
+                <ul>
+                  {this.renderPrevious()}
+                  {pageButtons}
+                  {this.renderNext()}
+                </ul>
+              </div>
+            </div>
         );
     }
 };

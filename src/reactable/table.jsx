@@ -471,21 +471,25 @@ export class Table extends React.Component {
 
         let noDataText = this.props.noDataText ? <tr className="reactable-no-data"><td colSpan={columns.length}>{this.props.noDataText}</td></tr> : null;
 
-        return <table {...props}>
-            {columns && columns.length > 0 ?
-             <Thead columns={columns}
-                 filtering={filtering}
-                 onFilter={this.onFilter.bind(this)}
-                 filterPlaceholder={this.props.filterPlaceholder}
-                 currentFilter={this.state.filter}
-                 sort={this.state.currentSort}
-                 sortableColumns={this._sortable}
-                 onSort={this.onSort.bind(this)}
-                 key="thead"/>
-             : null}
-            <tbody className="reactable-data" key="tbody">
-                {currentChildren.length > 0 ? currentChildren : noDataText}
-            </tbody>
+        return (
+          <div>
+            <table {...props}>
+                {columns && columns.length > 0 ?
+                 <Thead columns={columns}
+                     filtering={filtering}
+                     onFilter={this.onFilter.bind(this)}
+                     filterPlaceholder={this.props.filterPlaceholder}
+                     currentFilter={this.state.filter}
+                     sort={this.state.currentSort}
+                     sortableColumns={this._sortable}
+                     onSort={this.onSort.bind(this)}
+                     key="thead"/>
+                 : null}
+                <tbody className="reactable-data" key="tbody">
+                    {currentChildren.length > 0 ? currentChildren : noDataText}
+                </tbody>
+                {this.tfoot}
+            </table>
             {pagination === true ?
              <Paginator colSpan={columns.length}
                  pageButtonLimit={pageButtonLimit}
@@ -496,8 +500,8 @@ export class Table extends React.Component {
                  }}
                  key="paginator"/>
              : null}
-            {this.tfoot}
-        </table>;
+          </div>
+        );
     }
 }
 

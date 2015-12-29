@@ -969,25 +969,17 @@ window.ReactDOM["default"] = window.ReactDOM;
                 }
 
                 return _react['default'].createElement(
-                    'tbody',
+                    'div',
                     { className: 'reactable-pagination' },
                     _react['default'].createElement(
-                        'tr',
-                        null,
+                        'div',
+                        { className: 'pagination' },
                         _react['default'].createElement(
-                            'td',
-                            { colSpan: this.props.colSpan },
-                            _react['default'].createElement(
-                                'div',
-                                { className: 'pagination' },
-                                _react['default'].createElement(
-                                    'ul',
-                                    null,
-                                    this.renderPrevious(),
-                                    pageButtons,
-                                    this.renderNext()
-                                )
-                            )
+                            'ul',
+                            null,
+                            this.renderPrevious(),
+                            pageButtons,
+                            this.renderNext()
                         )
                     )
                 );
@@ -1517,21 +1509,26 @@ window.ReactDOM["default"] = window.ReactDOM;
                 ) : null;
 
                 return _react['default'].createElement(
-                    'table',
-                    props,
-                    columns && columns.length > 0 ? _react['default'].createElement(_thead.Thead, { columns: columns,
-                        filtering: filtering,
-                        onFilter: this.onFilter.bind(this),
-                        filterPlaceholder: this.props.filterPlaceholder,
-                        currentFilter: this.state.filter,
-                        sort: this.state.currentSort,
-                        sortableColumns: this._sortable,
-                        onSort: this.onSort.bind(this),
-                        key: 'thead' }) : null,
+                    'div',
+                    null,
                     _react['default'].createElement(
-                        'tbody',
-                        { className: 'reactable-data', key: 'tbody' },
-                        currentChildren.length > 0 ? currentChildren : noDataText
+                        'table',
+                        props,
+                        columns && columns.length > 0 ? _react['default'].createElement(_thead.Thead, { columns: columns,
+                            filtering: filtering,
+                            onFilter: this.onFilter.bind(this),
+                            filterPlaceholder: this.props.filterPlaceholder,
+                            currentFilter: this.state.filter,
+                            sort: this.state.currentSort,
+                            sortableColumns: this._sortable,
+                            onSort: this.onSort.bind(this),
+                            key: 'thead' }) : null,
+                        _react['default'].createElement(
+                            'tbody',
+                            { className: 'reactable-data', key: 'tbody' },
+                            currentChildren.length > 0 ? currentChildren : noDataText
+                        ),
+                        this.tfoot
                     ),
                     pagination === true ? _react['default'].createElement(_paginator.Paginator, { colSpan: columns.length,
                         pageButtonLimit: pageButtonLimit,
@@ -1540,8 +1537,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                         onPageChange: function (page) {
                             _this2.setState({ currentPage: page });
                         },
-                        key: 'paginator' }) : null,
-                    this.tfoot
+                        key: 'paginator' }) : null
                 );
             }
         }]);
