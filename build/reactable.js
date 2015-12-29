@@ -878,11 +878,15 @@ window.ReactDOM["default"] = window.ReactDOM;
             value: function renderPrevious() {
                 if (this.props.currentPage > 0) {
                     return _react['default'].createElement(
-                        'a',
-                        { className: 'reactable-previous-page',
-                            href: pageHref(this.props.currentPage - 1),
-                            onClick: this.handlePrevious.bind(this) },
-                        'Previous'
+                        'li',
+                        null,
+                        _react['default'].createElement(
+                            'a',
+                            { className: 'reactable-previous-page',
+                                href: pageHref(this.props.currentPage - 1),
+                                onClick: this.handlePrevious.bind(this) },
+                            '«'
+                        )
                     );
                 }
             }
@@ -891,11 +895,15 @@ window.ReactDOM["default"] = window.ReactDOM;
             value: function renderNext() {
                 if (this.props.currentPage < this.props.numPages - 1) {
                     return _react['default'].createElement(
-                        'a',
-                        { className: 'reactable-next-page',
-                            href: pageHref(this.props.currentPage + 1),
-                            onClick: this.handleNext.bind(this) },
-                        'Next'
+                        'li',
+                        null,
+                        _react['default'].createElement(
+                            'a',
+                            { className: 'reactable-next-page',
+                                href: pageHref(this.props.currentPage + 1),
+                                onClick: this.handleNext.bind(this) },
+                            '»'
+                        )
                     );
                 }
             }
@@ -904,12 +912,16 @@ window.ReactDOM["default"] = window.ReactDOM;
             value: function renderPageButton(className, pageNum) {
 
                 return _react['default'].createElement(
-                    'a',
-                    { className: className,
-                        key: pageNum,
-                        href: pageHref(pageNum),
-                        onClick: this.handlePageButton.bind(this, pageNum) },
-                    pageNum + 1
+                    'li',
+                    { className: className },
+                    _react['default'].createElement(
+                        'a',
+                        { className: className,
+                            key: pageNum,
+                            href: pageHref(pageNum),
+                            onClick: this.handlePageButton.bind(this, pageNum) },
+                        pageNum + 1
+                    )
                 );
             }
         }, {
@@ -939,7 +951,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                     var pageNum = i;
                     var className = "reactable-page-button";
                     if (currentPage === i) {
-                        className += " reactable-current-page";
+                        className += " reactable-current-page active";
                     }
                     pageButtons.push(this.renderPageButton(className, pageNum));
                 }
@@ -965,9 +977,17 @@ window.ReactDOM["default"] = window.ReactDOM;
                         _react['default'].createElement(
                             'td',
                             { colSpan: this.props.colSpan },
-                            this.renderPrevious(),
-                            pageButtons,
-                            this.renderNext()
+                            _react['default'].createElement(
+                                'div',
+                                { className: 'pagination' },
+                                _react['default'].createElement(
+                                    'ul',
+                                    null,
+                                    this.renderPrevious(),
+                                    pageButtons,
+                                    this.renderNext()
+                                )
+                            )
                         )
                     )
                 );
