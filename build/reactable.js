@@ -1510,7 +1510,7 @@ window.ReactDOM["default"] = window.ReactDOM;
 
                 return _react['default'].createElement(
                     'div',
-                    null,
+                    { style: { Height: 'inherit' } },
                     _react['default'].createElement(
                         'table',
                         props,

@@ -472,7 +472,7 @@ export class Table extends React.Component {
         let noDataText = this.props.noDataText ? <tr className="reactable-no-data"><td colSpan={columns.length}>{this.props.noDataText}</td></tr> : null;
 
         return (
-          <div style='height: inherit;'>
+          <div style={{Height: 'inherit'}}>
             <table {...props}>
                 {columns && columns.length > 0 ?
                  <Thead columns={columns}
