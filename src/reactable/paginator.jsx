@@ -22,32 +22,38 @@ export class Paginator extends React.Component {
 
     renderPrevious() {
         if(this.props.currentPage > 0) {
-            return <a className='reactable-previous-page'
+            return <li>
+                    <a className='reactable-previous-page'
                       href={pageHref(this.props.currentPage - 1)}
                       onClick={this.handlePrevious.bind(this)}>
-                        Previous
+                      «
                    </a>
+                 </li>
         }
     }
 
     renderNext() {
         if(this.props.currentPage < this.props.numPages - 1) {
-            return <a className='reactable-next-page'
+            return  <li>
+                    <a className='reactable-next-page'
                       href={pageHref(this.props.currentPage + 1)}
                       onClick={this.handleNext.bind(this)}>
-                      Next
+                      »
                    </a>
+                 </li>
         }
     }
 
     renderPageButton(className, pageNum) {
 
-        return <a className={className}
+        return <li className={className}>
+                <a className={className}
                   key={pageNum}
                   href={pageHref(pageNum)}
                   onClick={this.handlePageButton.bind(this, pageNum)}>
                   {pageNum + 1}
-              </a>
+                </a>
+              </li>
     }
 
     render() {
@@ -75,7 +81,7 @@ export class Paginator extends React.Component {
             let pageNum = i;
             let className = "reactable-page-button";
             if (currentPage === i) {
-                className += " reactable-current-page";
+                className += " reactable-current-page active";
             }
             pageButtons.push( this.renderPageButton(className, pageNum));
         }
@@ -93,16 +99,15 @@ export class Paginator extends React.Component {
         }
 
         return (
-            <tbody className="reactable-pagination">
-                <tr>
-                    <td colSpan={this.props.colSpan}>
-                        {this.renderPrevious()}
-                        {pageButtons}
-                        {this.renderNext()}
-                    </td>
-                </tr>
-            </tbody>
+            <div className="reactable-pagination">
+              <div className="pagination">
+                <ul>
+                  {this.renderPrevious()}
+                  {pageButtons}
+                  {this.renderNext()}
+                </ul>
+              </div>
+            </div>
         );
     }
 };
-

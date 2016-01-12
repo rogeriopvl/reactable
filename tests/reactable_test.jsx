@@ -774,7 +774,7 @@ describe('Reactable', function() {
             after(ReactableTestUtils.resetTestEnvironment);
 
             it('shows no more page buttons than the pageButtonLimit', function() {
-                var pageButtons = $('#table tbody.reactable-pagination a.reactable-page-button');
+                var pageButtons = $('.reactable-pagination a.reactable-page-button');
                 expect(pageButtons.length).to.equal(8);
             });
 
@@ -800,7 +800,7 @@ describe('Reactable', function() {
             after(ReactableTestUtils.resetTestEnvironment);
 
             it('provides buttons for each page', function() {
-                var pageButtons = $('#table tbody.reactable-pagination a.reactable-page-button');
+                var pageButtons = $('.reactable-pagination a.reactable-page-button');
                 expect(pageButtons.length).to.equal(3);
                 expect($(pageButtons[0])).to.have.text('1')
                 expect($(pageButtons[1])).to.have.text('2')
@@ -812,24 +812,24 @@ describe('Reactable', function() {
             });
 
             it('specifies a class on the currently active page', function() {
-                var activePage = $('#table tbody.reactable-pagination a.reactable-page-button.reactable-current-page');
+                var activePage = $('.reactable-pagination a.reactable-page-button.reactable-current-page');
                 expect(activePage.length).to.equal(1);
                 expect(activePage).to.have.text('1');
             });
 
             it('does not show previous button', function(){
-                var previousButton = $('#table tbody.reactable-pagination a.reactable-previous-page');
+                var previousButton = $('.reactable-pagination a.reactable-previous-page');
                 expect(previousButton.length).to.equal(0);
             });
 
             it('shows next button', function(){
-                var nextButton = $('#table tbody.reactable-pagination a.reactable-next-page');
+                var nextButton = $('.reactable-pagination a.reactable-next-page');
                 expect(nextButton.length).to.equal(1);
             });
 
             describe('clicking page buttons', function() {
                 beforeEach(function() {
-                    var page2 = $('#table tbody.reactable-pagination a.reactable-page-button')[1];
+                    var page2 = $('.reactable-pagination a.reactable-page-button')[1];
                     ReactTestUtils.Simulate.click(page2);
                 });
 
@@ -842,13 +842,13 @@ describe('Reactable', function() {
                 });
 
                 it('puts an active class on the new active page', function() {
-                    var activePage = $('#table tbody.reactable-pagination a.reactable-page-button.reactable-current-page');
+                    var activePage = $('.reactable-pagination a.reactable-page-button.reactable-current-page');
                     expect(activePage.length).to.equal(1);
                     expect(activePage).to.have.text('2');
                 });
 
                 it('can go back to the original page', function() {
-                    var page1 = $('#table tbody.reactable-pagination a.reactable-page-button')[0];
+                    var page1 = $('.reactable-pagination a.reactable-page-button')[0];
                     ReactTestUtils.Simulate.click(page1);
 
                     var rows = $('#table tbody.reactable-data tr');
@@ -859,7 +859,7 @@ describe('Reactable', function() {
                 });
 
                 it('shows previous button', function(){
-                    var previousButton = $('#table tbody.reactable-pagination a.reactable-previous-page');
+                    var previousButton = $('.reactable-pagination a.reactable-previous-page');
                     expect(previousButton.length).to.equal(1);
                 });
             });
@@ -890,14 +890,14 @@ describe('Reactable', function() {
             });
 
             it('provides buttons for 1 page', function() {
-                var pageButtons = $('#table tbody.reactable-pagination a.reactable-page-button');
+                var pageButtons = $('.reactable-pagination a.reactable-page-button');
                 expect(pageButtons.length).to.equal(1);
                 expect($(pageButtons[0])).to.have.text('1')
             });
 
             it('does not show previous and next buttons', function(){
-                var previousButton = $('#table tbody.reactable-pagination a.reactable-previous-page');
-                var nextButton = $('#table tbody.reactable-pagination a.reactable-next-page');
+                var previousButton = $('.reactable-pagination a.reactable-previous-page');
+                var nextButton = $('.reactable-pagination a.reactable-next-page');
                 expect(previousButton.length + nextButton.length).to.equal(0);
             })
 
@@ -1988,14 +1988,14 @@ describe('Reactable', function() {
                 $filter.val('colorado');
                 React.addons.TestUtils.Simulate.keyUp($filter[0]);
 
-                var pageButtons = $('#table tbody.reactable-pagination a.reactable-page-button');
+                var pageButtons = $('.reactable-pagination a.reactable-page-button');
                 expect(pageButtons.length).to.equal(1);
                 expect($(pageButtons[0])).to.have.text('1');
             });
 
             it('updates the current page if necessary', function() {
                 var $filter = $('#table thead tr.reactable-filterer input.reactable-filter-input');
-                var $pageButtons = $('#table tbody.reactable-pagination a.reactable-page-button');
+                var $pageButtons = $('.reactable-pagination a.reactable-page-button');
 
                 // Go to the last page
                 React.addons.TestUtils.Simulate.click($pageButtons[1])
@@ -2009,7 +2009,7 @@ describe('Reactable', function() {
                     "new description that shouldn't match filter",
                     'old'
                 ]);
-                var activePage = $('#table tbody.reactable-pagination ' +
+                var activePage = $('.reactable-pagination ' +
                     'a.reactable-page-button.reactable-current-page');
                 expect(activePage.length).to.equal(1);
                 expect(activePage).to.have.text('1');

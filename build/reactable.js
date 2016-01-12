@@ -878,11 +878,15 @@ window.ReactDOM["default"] = window.ReactDOM;
             value: function renderPrevious() {
                 if (this.props.currentPage > 0) {
                     return _react['default'].createElement(
-                        'a',
-                        { className: 'reactable-previous-page',
-                            href: pageHref(this.props.currentPage - 1),
-                            onClick: this.handlePrevious.bind(this) },
-                        'Previous'
+                        'li',
+                        null,
+                        _react['default'].createElement(
+                            'a',
+                            { className: 'reactable-previous-page',
+                                href: pageHref(this.props.currentPage - 1),
+                                onClick: this.handlePrevious.bind(this) },
+                            '«'
+                        )
                     );
                 }
             }
@@ -891,11 +895,15 @@ window.ReactDOM["default"] = window.ReactDOM;
             value: function renderNext() {
                 if (this.props.currentPage < this.props.numPages - 1) {
                     return _react['default'].createElement(
-                        'a',
-                        { className: 'reactable-next-page',
-                            href: pageHref(this.props.currentPage + 1),
-                            onClick: this.handleNext.bind(this) },
-                        'Next'
+                        'li',
+                        null,
+                        _react['default'].createElement(
+                            'a',
+                            { className: 'reactable-next-page',
+                                href: pageHref(this.props.currentPage + 1),
+                                onClick: this.handleNext.bind(this) },
+                            '»'
+                        )
                     );
                 }
             }
@@ -904,12 +912,16 @@ window.ReactDOM["default"] = window.ReactDOM;
             value: function renderPageButton(className, pageNum) {
 
                 return _react['default'].createElement(
-                    'a',
-                    { className: className,
-                        key: pageNum,
-                        href: pageHref(pageNum),
-                        onClick: this.handlePageButton.bind(this, pageNum) },
-                    pageNum + 1
+                    'li',
+                    { className: className },
+                    _react['default'].createElement(
+                        'a',
+                        { className: className,
+                            key: pageNum,
+                            href: pageHref(pageNum),
+                            onClick: this.handlePageButton.bind(this, pageNum) },
+                        pageNum + 1
+                    )
                 );
             }
         }, {
@@ -939,7 +951,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                     var pageNum = i;
                     var className = "reactable-page-button";
                     if (currentPage === i) {
-                        className += " reactable-current-page";
+                        className += " reactable-current-page active";
                     }
                     pageButtons.push(this.renderPageButton(className, pageNum));
                 }
@@ -957,14 +969,14 @@ window.ReactDOM["default"] = window.ReactDOM;
                 }
 
                 return _react['default'].createElement(
-                    'tbody',
+                    'div',
                     { className: 'reactable-pagination' },
                     _react['default'].createElement(
-                        'tr',
-                        null,
+                        'div',
+                        { className: 'pagination' },
                         _react['default'].createElement(
-                            'td',
-                            { colSpan: this.props.colSpan },
+                            'ul',
+                            null,
                             this.renderPrevious(),
                             pageButtons,
                             this.renderNext()
@@ -1497,21 +1509,26 @@ window.ReactDOM["default"] = window.ReactDOM;
                 ) : null;
 
                 return _react['default'].createElement(
-                    'table',
-                    props,
-                    columns && columns.length > 0 ? _react['default'].createElement(_thead.Thead, { columns: columns,
-                        filtering: filtering,
-                        onFilter: this.onFilter.bind(this),
-                        filterPlaceholder: this.props.filterPlaceholder,
-                        currentFilter: this.state.filter,
-                        sort: this.state.currentSort,
-                        sortableColumns: this._sortable,
-                        onSort: this.onSort.bind(this),
-                        key: 'thead' }) : null,
+                    'div',
+                    { style: { Height: 'inherit' } },
                     _react['default'].createElement(
-                        'tbody',
-                        { className: 'reactable-data', key: 'tbody' },
-                        currentChildren.length > 0 ? currentChildren : noDataText
+                        'table',
+                        props,
+                        columns && columns.length > 0 ? _react['default'].createElement(_thead.Thead, { columns: columns,
+                            filtering: filtering,
+                            onFilter: this.onFilter.bind(this),
+                            filterPlaceholder: this.props.filterPlaceholder,
+                            currentFilter: this.state.filter,
+                            sort: this.state.currentSort,
+                            sortableColumns: this._sortable,
+                            onSort: this.onSort.bind(this),
+                            key: 'thead' }) : null,
+                        _react['default'].createElement(
+                            'tbody',
+                            { className: 'reactable-data', key: 'tbody' },
+                            currentChildren.length > 0 ? currentChildren : noDataText
+                        ),
+                        this.tfoot
                     ),
                     pagination === true ? _react['default'].createElement(_paginator.Paginator, { colSpan: columns.length,
                         pageButtonLimit: pageButtonLimit,
@@ -1520,8 +1537,7 @@ window.ReactDOM["default"] = window.ReactDOM;
                         onPageChange: function (page) {
                             _this2.setState({ currentPage: page });
                         },
-                        key: 'paginator' }) : null,
-                    this.tfoot
+                        key: 'paginator' }) : null
                 );
             }
         }]);
