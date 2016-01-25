@@ -440,7 +440,9 @@ export class Table extends React.Component {
         // Apply filters
         let filteredChildren = children;
         if (this.state.filter !== '') {
-            filteredChildren = this.applyFilter(this.state.filter, filteredChildren);
+            filteredChildren = this.applyFilter(this.state.filter, filteredChildren).filter(function(value, index, self) {
+                return self.indexOf(value) === index;
+            });
         }
 
         // Determine pagination properties and which columns to display
